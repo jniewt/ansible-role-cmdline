@@ -5,6 +5,8 @@
   apt:
     name: "{{ cmdline_packages }}"
     update_cache: yes
+  # some packages don't exist in all supported distributions
+  ignore_errors: yes
 
 - name: Enable essential systemd services
   become: true
