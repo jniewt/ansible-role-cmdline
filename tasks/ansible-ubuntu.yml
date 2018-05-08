@@ -1,0 +1,11 @@
+---
+- name: add ansible repository (Ubuntu)
+  apt_repository:
+    repo: ppa:ansible/ansible
+    state: present
+  register: ansible_added
+
+- name: apt update cache (Ubuntu)
+  apt:
+    update_cache: yes
+  when: ansible_added.changed

@@ -1,0 +1,19 @@
+---
+# defaults file for debian_cmdline
+
+# Packages to install
+cmdline_packages:
+  - systemd
+  - vim
+  - tree
+  - curl
+  - python2.7
+  - python3
+
+# install ansible
+cmdline_ansible_install: yes
+
+# install docker
+cmdline_docker_install: no
+# allow running docker for current user without sudo
+cmdline_docker_nosudo: yes

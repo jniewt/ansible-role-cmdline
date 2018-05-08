@@ -1,0 +1,46 @@
+---
+- name: Install requirements
+  hosts: localhost
+  tasks:
+    - name: Install requirements.yml
+      local_action: command ansible-galaxy install -r requirements.yml --ignore-errors
+
+- name: Bring up docker container
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory:
+      - name: debian-testing
+        image: "jniewt/docker-debian-testing-ansible"
+      - name: debian9
+        image: "geerlingguy/docker-debian9-ansible"
+      - name: ubuntu16
+        image: thomasjpfan/ubuntu-python-systemd:16.04-py2
+      - name: ubuntu14
+        image: "pramttl/ubuntu-python"
+  tasks:
+  - include_role:
+      name: chrismeyersfsu.provision_docker
+    vars:
+      provision_docker_inventory: "{{ inventory }}"
+
+- name: Run Tests
+  hosts: docker_containers
+  remote_user: root
+  vars:
+    ansible_unit_test: True
+  tasks:
+    # geerlingguy.docker uses ansible_distribution_release and debian testing doesn't set it
+    - set_fact:
+        ansible_distribution_release: "buster"
+      when: ansible_distribution_version == 'buster/sid'
+    # systemctl replacement for ubuntu systems for testing
+    - name: update systemd
+      package: name="systemd" state="latest"
+      when: ansible_connection == 'docker' and ansible_distribution == "Ubuntu"
+    - name: install systemctl.py
+      copy: src="files/systemctl.py" dest="/usr/bin/systemctl"
+      when: ansible_connection == 'docker' and ansible_distribution == "Ubuntu"
+
+    - import_role:
+        name: cmdline

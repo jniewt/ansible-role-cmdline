@@ -1,0 +1,5 @@
+---
+docker_apt_release_channel: stable
+docker_install_compose: no
+docker_users:
+  - "{{ ansible_user_id }}"

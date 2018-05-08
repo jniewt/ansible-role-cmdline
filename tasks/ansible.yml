@@ -1,0 +1,15 @@
+---
+- name: install common software properties
+  apt:
+    name: software-properties-common
+    state: present
+
+- import_tasks: ansible-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- import_tasks: ansible-ubuntu.yml
+  when: ansible_os_family == 'Ubuntu'
+
+- name: install ansible
+  apt:
+    name: ansible

@@ -1,0 +1,17 @@
+---
+- name: install ansible ppa key
+  apt_key:
+    id: 93C4A3FD7BB9C367
+    keyserver: keyserver.ubuntu.com
+    state: present
+
+- name: add ansible repository (Debian)
+  apt_repository:
+    repo: deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+    state: present
+  register: ansible_added
+
+- name: apt update cache (Debian)
+  apt:
+    update_cache: yes
+  when: ansible_added.changed

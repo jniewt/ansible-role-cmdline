@@ -1,0 +1,53 @@
+---
+
+- name: Install essential packages
+  become: true
+  apt:
+    name: "{{ cmdline_packages }}"
+    update_cache: yes
+
+- name: Enable essential systemd services
+  become: true
+  systemd:
+    state: started
+    name: "{{ item }}"
+    enabled: yes
+  loop:
+    - systemd-networkd
+    - systemd-resolved
+  when: not ansible_unit_test
+
+- name: Retrieve systemd version
+  command: dpkg-query --show --showformat '${Version}' systemd
+  register: systemd_version
+
+- name: Create a link at /etc/resolv.conf for systemd-resolved (systemd>=236)
+  become: true
+  file:
+    path: /etc/resolv.conf
+    owner: root
+    src: /run/systemd/resolve/stub-resolv.conf
+    group: root
+    state: link
+    force: yes
+  # skip for testing because it causes problems in docker
+  when: systemd_version is version('236', '>=') and not ansible_unit_test
+
+- name: Create a link at /etc/resolv.conf for systemd-resolved (systemd<236)
+  become: true
+  file:
+    path: /etc/resolv.conf
+    owner: root
+    src: /run/systemd/resolve/resolv.conf
+    group: root
+    state: link
+    force: yes
+  # skip for testing because it causes problems in docker
+  when: systemd_version is version('236', '<') and not ansible_unit_test
+
+- import_tasks: vim.yml
+  tags: vim
+
+- import_tasks: ansible.yml
+  tags: ansible
+  when: cmdline_ansible_install | bool

@@ -1,0 +1,23 @@
+dependencies:
+  - { role: geerlingguy.docker, when: cmdline_docker_install | bool }
+
+galaxy_info:
+  author: jniewt
+  description: Initial provisioning of linux command line
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.5
+  platforms:
+  - name: Debian
+    versions:
+    - buster
+    - stretch
+  - name: Ubuntu
+    versions:
+    - trusty
+    - xenial
+  galaxy_tags:
+    - development
+    - system
+    - ansible
+    - docker
+    - systemd
