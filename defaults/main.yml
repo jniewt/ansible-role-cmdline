@@ -9,6 +9,7 @@ cmdline_packages:
   - curl
   - python2.7
   - python3
+  - ncdu
 
 # install ansible
 cmdline_ansible_install: yes
