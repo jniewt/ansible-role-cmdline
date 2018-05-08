@@ -29,6 +29,7 @@
   remote_user: root
   vars:
     ansible_unit_test: True
+    cmdline_docker_install: yes
   tasks:
     # geerlingguy.docker uses ansible_distribution_release and debian testing doesn't set it
     - set_fact:
