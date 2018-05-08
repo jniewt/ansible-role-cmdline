@@ -12,6 +12,7 @@ install:
   - pip install docker-py
   - pip install ansible
   - ansible --version
+  - ansible-galaxy install -r requirements.yml --ignore-errors
 
 script:
   - ansible-playbook -i inventory tests/test.yml --syntax-check
