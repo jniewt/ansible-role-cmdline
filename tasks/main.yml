@@ -17,7 +17,7 @@
   loop:
     - systemd-networkd
     - systemd-resolved
-  when: not ansible_unit_test
+  when: not ansible_unit_test | default("false") | bool
 
 - name: Retrieve systemd version
   command: dpkg-query --show --showformat '${Version}' systemd
@@ -33,7 +33,7 @@
     state: link
     force: yes
   # skip for testing because it causes problems in docker
-  when: systemd_version is version('236', '>=') and not ansible_unit_test
+  when: systemd_version is version('236', '>=') and not ansible_unit_test | default("false") | bool
 
 - name: Create a link at /etc/resolv.conf for systemd-resolved (systemd<236)
   become: true
@@ -45,7 +45,7 @@
     state: link
     force: yes
   # skip for testing because it causes problems in docker
-  when: systemd_version is version('236', '<') and not ansible_unit_test
+  when: systemd_version is version('236', '<') and not ansible_unit_test | default("false") | bool
 
 - import_tasks: vim.yml
   tags: vim
