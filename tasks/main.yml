@@ -33,7 +33,7 @@
     state: link
     force: yes
   # skip for testing because it causes problems in docker
-  when: systemd_version is version('236', '>=') and not ansible_unit_test | default("false") | bool
+  when: systemd_version.stdout is version('236', '>=') and not ansible_unit_test | default("false") | bool
 
 - name: Create a link at /etc/resolv.conf for systemd-resolved (systemd<236)
   become: true
@@ -45,7 +45,7 @@
     state: link
     force: yes
   # skip for testing because it causes problems in docker
-  when: systemd_version is version('236', '<') and not ansible_unit_test | default("false") | bool
+  when: systemd_version.stdout is version('236', '<') and not ansible_unit_test | default("false") | bool
 
 - import_tasks: vim.yml
   tags: vim
