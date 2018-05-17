@@ -51,5 +51,6 @@
   tags: vim
 
 - import_tasks: ansible.yml
+  become: true
   tags: ansible
   when: cmdline_ansible_install | bool
