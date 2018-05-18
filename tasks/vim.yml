@@ -3,6 +3,6 @@
 - name: Install basic vim configuration
   get_url:
     dest: ~/.vimrc
-    url: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
+    url: https://raw.githubusercontent.com/amix/vimrc/master/vimrcs/basic.vim
     backup: yes
-    force: yes 
+    force: yes
