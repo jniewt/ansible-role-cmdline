@@ -18,3 +18,5 @@ cmdline_ansible_install: yes
 cmdline_docker_install: no
 # allow running docker for current user without sudo
 cmdline_docker_nosudo: yes
+# which release of docker to install
+docker_apt_release_channel: stable

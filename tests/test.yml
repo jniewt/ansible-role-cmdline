@@ -14,6 +14,8 @@
         image: "jniewt/docker-debian-testing-ansible"
       - name: debian9
         image: "geerlingguy/docker-debian9-ansible"
+      - name: ubuntu18
+        image: "geerlingguy/docker-ubuntu1804-ansible"
       - name: ubuntu16
         image: thomasjpfan/ubuntu-python-systemd:16.04-py2
       - name: ubuntu14
@@ -35,6 +37,9 @@
     - set_fact:
         ansible_distribution_release: "buster"
       when: ansible_distribution_version == 'buster/sid'
+    - set_fact:
+        docker_apt_release_channel: nightly
+      when: ansible_distribution_version == '18.04'
     # systemctl replacement for ubuntu systems for testing
     - name: update systemd
       package: name="systemd" state="latest"
